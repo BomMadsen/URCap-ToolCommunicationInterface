@@ -36,6 +36,16 @@ public class TCICommunicatorXMLRPC {
 		}
 	}
 	
+	public boolean isOpen() {
+		boolean open = false;
+		try {
+			open = (Boolean) client.execute("isOpen", new ArrayList<String>());
+		} catch (XmlRpcException e) {
+			System.out.println("Caught XMLRPC exception");
+		}
+		return open;
+	}
+	
 	public void write(String data) {
 		ArrayList<String> args = new ArrayList<String>();
 		args.add(data);
