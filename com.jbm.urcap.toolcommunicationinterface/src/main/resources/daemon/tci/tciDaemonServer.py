@@ -25,12 +25,18 @@ def isOpen():
 
 def open():
     print "Opening port"
-    tci.open() 
+    try:
+        tci.open() 
+    except:
+        print "Error opening resource"
     return tci.isOpen()
 
 def close():
     print "Closing port"
-    tci.close()
+    try:
+        tci.close() 
+    except:
+        print "Error closing resource"
     return not tci.isOpen()
 
 def write(message):
