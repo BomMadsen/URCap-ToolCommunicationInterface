@@ -9,7 +9,7 @@ public class TCITester {
 	
 	public static void main(String[] args) {
 		System.out.println("Creating connection");
-		TCICommunicatorXMLRPC tci = new TCICommunicatorXMLRPC("127.0.0.1", 25000);
+		TCICommunicatorXMLRPC tci = new TCICommunicatorXMLRPC();
 		System.out.println("Created, checking connection");
 		System.out.println("Got pong back from server: " + tci.isReachable());
 		

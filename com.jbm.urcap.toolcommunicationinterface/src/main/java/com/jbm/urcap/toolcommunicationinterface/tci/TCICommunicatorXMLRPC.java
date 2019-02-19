@@ -12,7 +12,17 @@ public class TCICommunicatorXMLRPC {
 
 	private final XmlRpcClient client;
 	
+	public TCICommunicatorXMLRPC() {
+		String host = "127.0.0.1"; 			// Using localhost as default
+		int port = 25000;					// Using port 25000 as default
+		this.client = createXmlRpcClient(host, port);
+	}
+	
 	public TCICommunicatorXMLRPC(String host, int port) {
+		this.client = createXmlRpcClient(host, port);
+	}
+	
+	public XmlRpcClient createXmlRpcClient(String host, int port) {
 		XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
 		config.setEnabledForExtensions(true);
 		try {
@@ -21,8 +31,9 @@ public class TCICommunicatorXMLRPC {
 			e.printStackTrace();
 		}
 		config.setConnectionTimeout(1000); //1s
-		client = new XmlRpcClient();
+		XmlRpcClient client = new XmlRpcClient();
 		client.setConfig(config);
+		return client;
 	}
 	
 	public boolean isReachable() {
