@@ -22,7 +22,7 @@ public class TCICommunicatorXMLRPC {
 		this.client = createXmlRpcClient(host, port);
 	}
 	
-	public XmlRpcClient createXmlRpcClient(String host, int port) {
+	private XmlRpcClient createXmlRpcClient(String host, int port) {
 		XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
 		config.setEnabledForExtensions(true);
 		try {
@@ -36,20 +36,25 @@ public class TCICommunicatorXMLRPC {
 		return client;
 	}
 	
-	public boolean isReachable() {
+	public Boolean isReachable() {
 		try {
-			client.execute("ping", new ArrayList<String>());
-			return true;
+			Object result = client.execute("ping", new ArrayList<String>());
+			if(result instanceof String) {
+				return ((String) result).equals("pong");
+			}
 		} catch (XmlRpcException e) {
 			System.out.println("Caught XMLRPC exception");
-			return false;
 		}
+		return false;
 	}
 	
-	public boolean isOpen() {
-		boolean open = false;
+	public Boolean isOpen() {
+		Boolean open = false;
 		try {
-			open = (Boolean) client.execute("isOpen", new ArrayList<String>());
+			Object result = client.execute("isOpen", new ArrayList<String>());
+			if(result instanceof Boolean) {
+				open = (Boolean) result;
+			}
 		} catch (XmlRpcException e) {
 			System.out.println("Caught XMLRPC exception");
 		}
