@@ -1,17 +1,32 @@
 package com.jbm.urcap.toolcommunicationinterface.impl;
 
 import com.jbm.urcap.toolcommunicationinterface.tci.TCIDaemonService;
+import com.jbm.urcap.toolcommunicationinterface.tci.ToolIOController;
 import com.ur.urcap.api.contribution.InstallationNodeContribution;
 import com.ur.urcap.api.contribution.installation.InstallationAPIProvider;
 import com.ur.urcap.api.domain.data.DataModel;
+import com.ur.urcap.api.domain.resource.ControllableResourceModel;
 import com.ur.urcap.api.domain.script.ScriptWriter;
 
 public class TCIInstallationNodeContribution implements InstallationNodeContribution {
 
+	private final InstallationAPIProvider apiProvider;
+	private final TCIInstallationNodeView view;
+	private final DataModel model;
+	private final TCIDaemonService tciDaemon;
+	private final ToolIOController toolIOController;
+	
 	public TCIInstallationNodeContribution(InstallationAPIProvider apiProvider,
 			TCIInstallationNodeView view, DataModel model,
 			TCIDaemonService tciDaemonService) {
-		// TODO Auto-generated constructor stub
+		this.apiProvider = apiProvider;
+		this.view = view;
+		this.model = model;
+		this.tciDaemon = tciDaemonService;
+		
+		ControllableResourceModel resourceModel = apiProvider.getInstallationAPI().getControllableResourceModel();
+		this.toolIOController = new ToolIOController(resourceModel, apiProvider.getSystemAPI().getCapabilityManager());
+		resourceModel.requestControl(this.toolIOController);
 	}
 	
 	@Override
