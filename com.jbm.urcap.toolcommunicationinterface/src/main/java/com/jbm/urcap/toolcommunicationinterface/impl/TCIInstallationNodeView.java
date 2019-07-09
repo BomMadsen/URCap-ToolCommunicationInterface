@@ -1,6 +1,7 @@
 package com.jbm.urcap.toolcommunicationinterface.impl;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -20,6 +21,9 @@ public class TCIInstallationNodeView implements SwingInstallationNodeView<TCIIns
 	}
 	
 	private JCheckBox CHECKBOX_FUNCTIONALITY_ENABLED = new JCheckBox();
+	private JLabel LABEL_CONTROL_OF_TOOLIO_STATUS = new JLabel();
+	private JLabel LABEL_TCI_CONFIGURATION_STATUS = new JLabel();
+	private JLabel LABEL_DAEMON_RUNNING_STATUS = new JLabel();
 	
 	@Override
 	public void buildUI(JPanel panel, TCIInstallationNodeContribution contribution) {
@@ -28,10 +32,26 @@ public class TCIInstallationNodeView implements SwingInstallationNodeView<TCIIns
 		panel.add(createDescriptionLabel("This URCap assumes control over the Tool I/O, and enables communication over the Tool Communication Interface."));
 		panel.add(createDescriptionLabel("Decide whether the functionality of this URCap should be enabled:"));
 		panel.add(createFunctionalityEnabledBox("Enable TCI control", contribution));
+		panel.add(createSpacer(25));
+		panel.add(createStatusLabel("Tool I/O Control:", LABEL_CONTROL_OF_TOOLIO_STATUS));
+		panel.add(createStatusLabel("TCI Configuration:", LABEL_TCI_CONFIGURATION_STATUS));
+		panel.add(createStatusLabel("TCI Communication Service:", LABEL_DAEMON_RUNNING_STATUS));
 	}
 	
 	public void setFunctionalityEnabledCheckbox(boolean enabled) {
 		CHECKBOX_FUNCTIONALITY_ENABLED.setSelected(enabled);
+	}
+	
+	public void setStatusLabel_ToolIOControl(String status) {
+		LABEL_CONTROL_OF_TOOLIO_STATUS.setText(status);
+	}
+	
+	public void setStatusLabel_TCIConfiguration(String status) {
+		LABEL_TCI_CONFIGURATION_STATUS.setText(status);
+	}
+	
+	public void setStatusLabel_DaemonRunning(String status) {
+		LABEL_DAEMON_RUNNING_STATUS.setText(status);
 	}
 	
 	private Box createFunctionalityEnabledBox(String text, final TCIInstallationNodeContribution contribution) {
@@ -52,6 +72,27 @@ public class TCIInstallationNodeView implements SwingInstallationNodeView<TCIIns
 		return box;
 	}
 	
+	private Box createStatusLabel(String description, JLabel statusLabel) {
+		Box box = Box.createHorizontalBox();
+		box.setAlignmentX(Component.LEFT_ALIGNMENT);
+		box.setPreferredSize(new Dimension(500, 30));
+		
+		JLabel descriptionLabel = new JLabel(description);
+		
+		Dimension labelSize = new Dimension(250, 30);
+		
+		descriptionLabel.setPreferredSize(labelSize);
+		descriptionLabel.setMinimumSize(labelSize);
+		
+		statusLabel.setPreferredSize(labelSize);
+		statusLabel.setMinimumSize(labelSize);
+		
+		box.add(descriptionLabel);
+		box.add(statusLabel);
+		
+		return box;
+	}
+	
 	private Box createDescriptionLabel(String text) {
 		Box box = Box.createHorizontalBox();
 		box.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -61,6 +102,10 @@ public class TCIInstallationNodeView implements SwingInstallationNodeView<TCIIns
 		box.add(descriptionLabel);
 		
 		return box;
+	}
+	
+	private Component createSpacer(int height) {
+		return Box.createRigidArea(new Dimension(0, height));
 	}
 
 }
