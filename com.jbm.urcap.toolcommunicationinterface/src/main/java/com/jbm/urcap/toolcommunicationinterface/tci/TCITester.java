@@ -13,9 +13,14 @@ public class TCITester {
 		System.out.println("Created, checking connection");
 		System.out.println("Got pong back from server: " + tci.isReachable());
 		
-		System.out.println("Opening port...");
-		boolean openedPort = tci.open();
-		System.out.println("Opened: "+openedPort);
+		System.out.println("Querying open state");
+		if(!tci.isOpen()) {
+			System.out.println("Opening port...");
+			boolean openedPort = tci.open();
+			System.out.println("Opened: "+openedPort);
+		} else {
+			System.out.println("Port already open");
+		}
 		
 		System.out.println("Trying write");
 		tci.write("Hello tool-device");

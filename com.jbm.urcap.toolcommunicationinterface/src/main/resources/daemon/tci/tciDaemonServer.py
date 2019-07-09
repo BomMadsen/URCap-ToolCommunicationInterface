@@ -59,22 +59,23 @@ def read(byteCount):
         print "Read: ", reply
     return reply
 
-print tci
-print isOpen()
-print "Opening"
-open()
-print isOpen()
-print tci
-write("Hello World")
-print read(4)
-print "Closing"
-close()
+#print tci
+#print isOpen()
+#print "Opening"
+#open()
+#print isOpen()
+#print tci
+#write("Hello World")
+#print read(4)
+#print "Closing"
+#close()
 
-#print "Opening XML-RPC Server"
-#server = SimpleXMLRPCServer(("", 25000), allow_none=True)
-#server.register_function(write, "write")
-#server.register_function(read, "read")
-#server.register_function(ping, "ping")
-#server.register_function(open, "open")
-#server.register_function(close, "close")
-#server.serve_forever()
+print "Opening XML-RPC Server"
+server = SimpleXMLRPCServer(("", 25000), allow_none=True)
+server.register_function(write, "write")
+server.register_function(read, "read")
+server.register_function(ping, "ping")
+server.register_function(open, "open")
+server.register_function(close, "close")
+server.register_function(isOpen, "isOpen")
+server.serve_forever()
