@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import org.apache.xmlrpc.XmlRpcException;
+import org.apache.xmlrpc.XmlRpcRequest;
+import org.apache.xmlrpc.client.AsyncCallback;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 
@@ -48,6 +50,27 @@ public class TCICommunicatorXMLRPC {
 		return false;
 	}
 	
+	public void isReachable(final XmlRpcCallback<Boolean> callback) {
+		try {
+			client.executeAsync("ping", new ArrayList<String>(), new AsyncCallback() {
+				
+				@Override
+				public void handleResult(XmlRpcRequest arg0, Object arg1) {
+					if(arg1 instanceof String) {
+						callback.getResult(((String) arg1).equals("pong"));
+					}
+				}
+				
+				@Override
+				public void handleError(XmlRpcRequest arg0, Throwable arg1) {
+					System.out.println("XMLRPC Error in isReachable callback");
+				}
+			});
+		} catch (XmlRpcException e) {
+			System.out.println("Caught XMLRPC exception");
+		}
+	}
+	
 	public Boolean isOpen() {
 		Boolean open = false;
 		try {
@@ -59,6 +82,27 @@ public class TCICommunicatorXMLRPC {
 			System.out.println("Caught XMLRPC exception");
 		}
 		return open;
+	}
+	
+	public void isOpen(final XmlRpcCallback<Boolean> callback) {
+		try {
+			client.executeAsync("isOpen", new ArrayList<String>(), new AsyncCallback() {
+				
+				@Override
+				public void handleResult(XmlRpcRequest arg0, Object arg1) {
+					if(arg1 instanceof Boolean) {
+						callback.getResult((Boolean) arg1);
+					}
+				}
+				
+				@Override
+				public void handleError(XmlRpcRequest arg0, Throwable arg1) {
+					System.out.println("XMLRPC Error in isOpen callback");
+				}
+			});
+		} catch (XmlRpcException e) {
+			System.out.println("Caught XMLRPC exception");
+		}
 	}
 	
 	public void write(String data) {
@@ -84,6 +128,30 @@ public class TCICommunicatorXMLRPC {
 		return result;
 	}
 	
+	public void read(int bytesToRead, final XmlRpcCallback<String> callback) {
+		ArrayList<Integer> args = new ArrayList<Integer>();
+		args.add(bytesToRead);
+		
+		try {
+			client.executeAsync("read", args, new AsyncCallback() {
+				
+				@Override
+				public void handleResult(XmlRpcRequest arg0, Object arg1) {
+					if(arg1 instanceof String) {
+						callback.getResult((String) arg1);
+					}
+				}
+				
+				@Override
+				public void handleError(XmlRpcRequest arg0, Throwable arg1) {
+					System.out.println("XMLRPC Error in read callback");
+				}
+			});
+		} catch (XmlRpcException e) {
+			System.out.println("Caught XMLRPC exception");
+		}
+	}
+	
 	public Boolean open() {
 		Boolean opened = false;
 		try {
@@ -98,6 +166,27 @@ public class TCICommunicatorXMLRPC {
 		return opened;
 	}
 	
+	public void open(final XmlRpcCallback<Boolean> callback) {
+		try {
+			client.executeAsync("open", new ArrayList<String>(), new AsyncCallback() {
+				
+				@Override
+				public void handleResult(XmlRpcRequest arg0, Object arg1) {
+					if(arg1 instanceof Boolean) {
+						callback.getResult((Boolean) arg1);
+					}
+				}
+				
+				@Override
+				public void handleError(XmlRpcRequest arg0, Throwable arg1) {
+					System.out.println("XMLRPC Error in open callback");
+				}
+			});
+		} catch (XmlRpcException e) {
+			System.out.println("Caught XMLRPC exception");
+		}
+	}
+	
 	public Boolean close() {
 		Boolean closed = false;
 		try {
@@ -110,4 +199,26 @@ public class TCICommunicatorXMLRPC {
 		}
 		return closed;
 	}
+	
+	public void close(final XmlRpcCallback<Boolean> callback) {
+		try {
+			client.executeAsync("close", new ArrayList<String>(), new AsyncCallback() {
+				
+				@Override
+				public void handleResult(XmlRpcRequest arg0, Object arg1) {
+					if(arg1 instanceof Boolean) {
+						callback.getResult((Boolean) arg1);
+					}
+				}
+				
+				@Override
+				public void handleError(XmlRpcRequest arg0, Throwable arg1) {
+					System.out.println("XMLRPC Error in close callback");
+				}
+			});
+		} catch (XmlRpcException e) {
+			System.out.println("Caught XMLRPC exception");
+		}
+	}
+	
 }
