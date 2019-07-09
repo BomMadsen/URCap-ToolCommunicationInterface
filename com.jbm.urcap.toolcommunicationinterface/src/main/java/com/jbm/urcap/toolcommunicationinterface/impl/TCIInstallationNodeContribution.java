@@ -37,13 +37,19 @@ public class TCIInstallationNodeContribution implements InstallationNodeContribu
 		ControllableResourceModel resourceModel = apiProvider.getInstallationAPI().getControllableResourceModel();
 		this.toolIOController = new ToolIOController(resourceModel, apiProvider.getSystemAPI().getCapabilityManager());
 		resourceModel.requestControl(this.toolIOController);
+		
+		if(shouldRunDaemon()) {
+			runDaemon();
+		}
 	}
 	
 	public void userSelectedFunctonalityEnabled(boolean enabled) {
 		setFunctionalityEnabled(enabled);
 		if(getFunctionalityEnabled()) {
+			runDaemon();
 			enabledFunctionalityViewUpdate();
 		} else {
+			stopDaemon();
 			disabledFunctionalityViewUpdate();
 		}
 	}
@@ -125,7 +131,7 @@ public class TCIInstallationNodeContribution implements InstallationNodeContribu
 	
 	// Handlers to control daemon
 	private boolean shouldRunDaemon() {
-		return getFunctionalityEnabled() && toolIOController.isTCIConfiguredCorrectly();
+		return getFunctionalityEnabled();
 	}
 	private boolean isDaemonRunning() {
 		return tciDaemon.getDaemonContribution().getState().equals(State.RUNNING);
