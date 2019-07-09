@@ -16,6 +16,9 @@ public class TCIInstallationNodeContribution implements InstallationNodeContribu
 	private final TCIDaemonService tciDaemon;
 	private final ToolIOController toolIOController;
 	
+	private static final String 	ENABLE_FUNCTIONALITY_KEY 		= "enable";
+	private static final boolean 	ENABLE_FUNCTIONALITY_DEFAULT	= false;
+	
 	public TCIInstallationNodeContribution(InstallationAPIProvider apiProvider,
 			TCIInstallationNodeView view, DataModel model,
 			TCIDaemonService tciDaemonService) {
@@ -29,10 +32,13 @@ public class TCIInstallationNodeContribution implements InstallationNodeContribu
 		resourceModel.requestControl(this.toolIOController);
 	}
 	
+	public void userSelectedFunctonalityEnabled(boolean enabled) {
+		setFunctionalityEnabled(enabled);
+	}
+	
 	@Override
 	public void openView() {
-		// TODO Auto-generated method stub
-		
+		view.setFunctionalityEnabledCheckbox(getFunctionalityEnabled());
 	}
 
 	@Override
@@ -47,4 +53,12 @@ public class TCIInstallationNodeContribution implements InstallationNodeContribu
 		
 	}
 
+	// DataModel getters and setters to handle whether the URCap's functionality is enabled
+	private void setFunctionalityEnabled(boolean enabled) {
+		model.set(ENABLE_FUNCTIONALITY_KEY, enabled);
+	}
+	private boolean getFunctionalityEnabled() {
+		return model.get(ENABLE_FUNCTIONALITY_KEY, ENABLE_FUNCTIONALITY_DEFAULT);
+	}
+	
 }
